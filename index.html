@@ -1,281 +1,31 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الاستجابة للحوادث وإدارة المخاطر</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="style.css">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#163c58">
+<title>الدرس ٢-٣ | الاستجابة للحوادث وإدارة المخاطر</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Readex+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"><script src="script.js" defer></script>
 </head>
 <body>
-
-<div class="top">
-  <div class="brand"><i class="fa-solid fa-shield-halved"></i> <span>الأمن السيبراني</span> | الاستجابة للحوادث وإدارة المخاطر</div>
-  <div class="counter" id="counter">1 / 1</div>
-</div>
-<div class="progress" id="progress"></div>
-
-<main class="deck" id="deck">
-
-<!-- 1 Title -->
-<section class="slide">
-  <div class="inner hero">
-    <div class="badge">درس تفاعلي</div>
-    <h1>الاستجابة للحوادث<br>وإدارة المخاطر</h1>
-    <p class="sub">كيف تستعد المؤسسة للهجوم، وكيف تتصرف عند وقوعه، وكيف تقرر أي المخاطر تعالج أولاً؟</p>
-    <div><button class="btn primary" onclick="go(1)">ابدأ الدرس ←</button></div>
-    <p class="hint">التنقل: الأسهم <span class="kbd">→</span> <span class="kbd">←</span> أو الأزرار بالأسفل، أو السحب على الجوال.</p>
-  </div>
-</section>
-
-<!-- 2 Objectives -->
-<section class="slide"><div class="inner">
-  <h2><span class="num">01</span>أهداف الدرس</h2>
-  <p class="sub">في نهاية الدرس سيكون الطالب قادراً على:</p>
-  <div class="grid g2">
-    <div class="card"><div class="ic"><i class="fa-solid fa-book"></i></div><h3>التمييز بين المفاهيم</h3><p>الحدث، الحادثة، التهديد، الثغرة، والخطر.</p></div>
-    <div class="card"><div class="ic"><i class="fa-solid fa-rotate"></i></div><h3>شرح دورة الاستجابة</h3><p>مراحل الاستجابة للحوادث وفق إطار NIST وما يحدث في كل مرحلة.</p></div>
-    <div class="card"><div class="ic"><i class="fa-solid fa-chart-bar"></i></div><h3>تقييم المخاطر</h3><p>حساب الخطر = الاحتمالية × الأثر واستخدام مصفوفة المخاطر.</p></div>
-    <div class="card"><div class="ic"><i class="fa-solid fa-compass"></i></div><h3>اختيار المعالجة</h3><p>التجنب، التخفيف، النقل، أو القبول، مع خطط الاستمرارية.</p></div>
-  </div>
+<header class="top"><a class="brand" href="#" aria-label="العودة إلى بداية الدرس"><span class="brand-mark" aria-hidden="true">◈</span><span>الأمن السيبراني<small>مساحة تعلّم تفاعلية</small></span></a><div class="lesson-label">الدرس <b dir="ltr" class="lesson-number">٢-٣</b></div><span id="counter" class="counter"></span></header>
+<div class="progress-track"><div id="progress"></div></div>
+<main id="deck" class="deck">
+<section class="slide active" data-title="البداية"><div class="inner hero">
+<div class="hero-copy"><p class="eyebrow">من الوقاية إلى الاستجابة / <bdi dir="ltr" class="lesson-number">٢-٣</bdi></p><h1>الاستجابة للحوادث<br><span>وإدارة المخاطر</span></h1><p class="lead">قد يقع الحادث رغم الحماية.<br>الفرق تصنعه استجابة منظّمة وأولويات واضحة.</p><button class="btn primary" data-go="1">لنبدأ الدرس <span aria-hidden="true">←</span></button><p class="hint">تعلّم المراحل · قيّم المخاطر · برّر قرارك</p></div>
+<div class="response-map" aria-label="الفكرة الأساسية للدرس"><div class="map-label"><span class="status-dot"></span> مسار الاستجابة</div><div class="signal">حادث أمني<span>ماذا نفعل الآن؟</span></div><div class="map-path"><span>نستعد ونكتشف</span><span>نحتوي ونزيل التهديد</span><span>نستعيد ونتعلّم</span></div><div class="map-footer">كيف نرتّب الأولويات؟<strong>التأثير × الاحتمالية</strong></div></div>
 </div></section>
-
-<!-- 3 Definitions flip -->
-<section class="slide"><div class="inner">
-  <h2><span class="num">02</span>مفاهيم أساسية</h2>
-  <p class="sub">اضغط على كل بطاقة لقلبها ومعرفة التعريف والمثال.</p>
-  <div class="grid g3">
-    <div class="flip" onclick="this.classList.toggle('on')"><div class="face">
-      <div class="f"><div class="ic"><i class="fa-solid fa-location-dot"></i></div><h3>الحدث (Event)</h3><span class="hint">اضغط للقلب</span></div>
-      <div class="b">أي نشاط يمكن ملاحظته في النظام أو الشبكة.<br><b>مثال:</b> مستخدم سجّل دخوله، أو ملف تم فتحه.</div></div></div>
-    <div class="flip" onclick="this.classList.toggle('on')"><div class="face">
-      <div class="f"><div class="ic"><i class="fa-solid fa-triangle-exclamation"></i></div><h3>الحادثة (Incident)</h3><span class="hint">اضغط للقلب</span></div>
-      <div class="b">حدث يهدد أو ينتهك سرية المعلومات أو سلامتها أو توفرها، أو يخالف السياسات الأمنية.<br><b>مثال:</b> تشفير الملفات ببرنامج فدية.</div></div></div>
-    <div class="flip" onclick="this.classList.toggle('on')"><div class="face">
-      <div class="f"><div class="ic"><i class="fa-solid fa-user"></i></div><h3>التهديد (Threat)</h3><span class="hint">اضغط للقلب</span></div>
-      <div class="b">أي جهة أو ظرف قد يستغل ثغرة ويسبب ضرراً.<br><b>مثال:</b> مخترق، برمجية خبيثة، حريق، موظف مهمل.</div></div></div>
-    <div class="flip" onclick="this.classList.toggle('on')"><div class="face">
-      <div class="f"><div class="ic"><i class="fa-solid fa-bug"></i></div><h3>الثغرة (Vulnerability)</h3><span class="hint">اضغط للقلب</span></div>
-      <div class="b">نقطة ضعف في نظام أو إجراء أو إنسان يمكن استغلالها.<br><b>مثال:</b> نظام غير محدَّث، كلمة مرور ضعيفة.</div></div></div>
-    <div class="flip" onclick="this.classList.toggle('on')"><div class="face">
-      <div class="f"><div class="ic"><i class="fa-solid fa-scale-balanced"></i></div><h3>الخطر (Risk)</h3><span class="hint">اضغط للقلب</span></div>
-      <div class="b">احتمال أن يستغل تهديدٌ ثغرةً فيسبب أثراً على أصل ذي قيمة.<br><b>الخطر = الاحتمالية × الأثر</b></div></div></div>
-    <div class="flip" onclick="this.classList.toggle('on')"><div class="face">
-      <div class="f"><div class="ic"><i class="fa-solid fa-gem"></i></div><h3>الأصل (Asset)</h3><span class="hint">اضغط للقلب</span></div>
-      <div class="b">أي شيء له قيمة للمؤسسة ويحتاج حماية.<br><b>مثال:</b> قاعدة بيانات العملاء، الخوادم، السمعة، الموظفون.</div></div></div>
-  </div>
-  <div class="card" style="margin-top:16px"><b><i class="fa-solid fa-lightbulb"></i> قاعدة ذهبية:</b> كل حادثة هي حدث، لكن ليس كل حدث حادثة.</div>
-</div></section>
-
-<!-- 4 Event vs Incident activity -->
-<section class="slide"><div class="inner">
-  <h2><span class="num">03</span>نشاط: حدث أم حادثة؟</h2>
-  <p class="sub">اختر بطاقة ثم اضغط على الصندوق المناسب.</p>
-  <div class="pool" id="pool1"></div>
-  <div class="bins">
-    <div class="bin" data-bin="event" onclick="dropIn(this,'1')"><h4><i class="fa-solid fa-location-dot"></i> حدث عادي</h4></div>
-    <div class="bin" data-bin="incident" onclick="dropIn(this,'1')"><h4><i class="fa-solid fa-triangle-exclamation"></i> حادثة أمنية</h4></div>
-  </div>
-  <p class="score" id="score1" style="margin-top:12px"></p>
-</div></section>
-
-<!-- 5 CIA -->
-<section class="slide"><div class="inner">
-  <h2><span class="num">04</span>ماذا نحمي؟ مثلث CIA</h2>
-  <p class="sub">الحادثة الأمنية تمس واحداً أو أكثر من هذه الأركان الثلاثة.</p>
-  <div class="grid g3">
-    <div class="card" style="border-top:4px solid var(--accent)"><div class="ic"><i class="fa-solid fa-lock"></i></div><h3>السرية Confidentiality</h3><p>وصول المعلومات للمخوَّلين فقط.</p><span class="tag">مهدَّدة بـ: تسريب البيانات</span></div>
-    <div class="card" style="border-top:4px solid var(--accent2)"><div class="ic"><i class="fa-solid fa-check"></i></div><h3>السلامة Integrity</h3><p>بقاء المعلومات صحيحة دون تعديل غير مصرح.</p><span class="tag">مهدَّدة بـ: تعديل الدرجات أو الأرصدة</span></div>
-    <div class="card" style="border-top:4px solid var(--ok)"><div class="ic"><i class="fa-solid fa-bolt"></i></div><h3>التوفر Availability</h3><p>إتاحة الأنظمة والبيانات وقت الحاجة.</p><span class="tag">مهدَّدة بـ: هجوم DDoS، الفدية</span></div>
-  </div>
-</div></section>
-
-<!-- 6 Lifecycle -->
-<section class="slide"><div class="inner">
-  <h2><span class="num">05</span>دورة الاستجابة للحوادث (NIST)</h2>
-  <p class="sub">اضغط على كل مرحلة لعرض تفاصيلها. هذا النموذج من دليل NIST SP 800-61 وهو الأكثر استخداماً في التدريس.</p>
-  <div class="cycle" id="cycle">
-    <div class="phase on" data-p="0"><b>1</b>التحضير<br><small>Preparation</small></div>
-    <div class="phase" data-p="1"><b>2</b>الكشف والتحليل<br><small>Detection & Analysis</small></div>
-    <div class="phase" data-p="2"><b>3</b>الاحتواء والاستئصال والتعافي<br><small>Containment, Eradication & Recovery</small></div>
-    <div class="phase" data-p="3"><b>4</b>ما بعد الحادثة<br><small>Post-Incident Activity</small></div>
-  </div>
-  <div class="detail" id="phaseDetail"></div>
-  <p class="hint">ملاحظة: الدورة مستمرة؛ الدروس المستفادة في المرحلة 4 تعود لتحسين التحضير في المرحلة 1. والإصدار الأحدث من الدليل يربط الاستجابة بوظائف إطار NIST للأمن السيبراني (CSF 2.0).</p>
-</div></section>
-
-<!-- 7 SANS -->
-<section class="slide"><div class="inner">
-  <h2><span class="num">06</span>نموذج SANS: الخطوات الست</h2>
-  <p class="sub">نموذج آخر شائع يفصّل المرحلة الثالثة إلى خطوات مستقلة. يُختصر بـ PICERL.</p>
-  <div class="grid g3">
-    <div class="card"><span class="tag">P</span><h3>1. التحضير</h3><p>السياسات، الفريق، الأدوات، التدريب.</p></div>
-    <div class="card"><span class="tag">I</span><h3>2. التعرّف</h3><p>هل ما يحدث حادثة فعلاً؟ ما نطاقها؟</p></div>
-    <div class="card"><span class="tag">C</span><h3>3. الاحتواء</h3><p>إيقاف الانتشار: عزل الأجهزة، حظر الحسابات.</p></div>
-    <div class="card"><span class="tag">E</span><h3>4. الاستئصال</h3><p>إزالة السبب: حذف البرمجية الخبيثة، سد الثغرة.</p></div>
-    <div class="card"><span class="tag">R</span><h3>5. التعافي</h3><p>إعادة الأنظمة من نسخ نظيفة ومراقبتها.</p></div>
-    <div class="card"><span class="tag">L</span><h3>6. الدروس المستفادة</h3><p>تقرير، تحليل السبب الجذري، تحسين الخطط.</p></div>
-  </div>
-</div></section>
-
-<!-- 8 Order activity -->
-<section class="slide"><div class="inner">
-  <h2><span class="num">07</span>نشاط: رتّب خطوات الاستجابة</h2>
-  <p class="sub">اضغط على الخطوات بالترتيب الصحيح من الأولى إلى الأخيرة.</p>
-  <div class="pool" id="orderPool"></div>
-  <div class="card" style="margin-top:10px"><b>ترتيبك:</b> <span id="orderOut" style="color:var(--accent)"></span></div>
-  <p id="orderMsg" class="score" style="margin-top:10px"></p>
-  <button class="btn" onclick="initOrder()">إعادة المحاولة ↺</button>
-</div></section>
-
-<!-- 9 CSIRT -->
-<section class="slide"><div class="inner">
-  <h2><span class="num">08</span>فريق الاستجابة للحوادث (CSIRT)</h2>
-  <p class="sub">الاستجابة عمل جماعي، وليست مسؤولية قسم تقنية المعلومات وحده.</p>
-  <div class="grid g3">
-    <div class="card"><div class="ic"><i class="fa-solid fa-user-tie"></i></div><h3>قائد الفريق</h3><p>يدير الحادثة ويتخذ القرارات ويحدد الأولويات.</p></div>
-    <div class="card"><div class="ic"><i class="fa-solid fa-magnifying-glass"></i></div><h3>المحلل الأمني</h3><p>يحلل السجلات والأدلة ويحدد نطاق الهجوم.</p></div>
-    <div class="card"><div class="ic"><i class="fa-solid fa-desktop"></i></div><h3>فريق تقنية المعلومات</h3><p>ينفذ العزل والإصلاح والاستعادة.</p></div>
-    <div class="card"><div class="ic"><i class="fa-solid fa-scale-balanced"></i></div><h3>الشؤون القانونية</h3><p>الالتزامات النظامية، إبلاغ الجهات المختصة.</p></div>
-    <div class="card"><div class="ic"><i class="fa-solid fa-bullhorn"></i></div><h3>التواصل والإعلام</h3><p>صياغة الرسائل للموظفين والعملاء والإعلام.</p></div>
-    <div class="card"><div class="ic"><i class="fa-solid fa-user-tie"></i></div><h3>الإدارة العليا</h3><p>الدعم والموارد والقرارات الكبرى (مثل دفع الفدية من عدمه).</p></div>
-  </div>
-</div></section>
-
-<!-- 10 Severity -->
-<section class="slide"><div class="inner">
-  <h2><span class="num">09</span>تصنيف الحوادث حسب الخطورة</h2>
-  <p class="sub">التصنيف يحدد سرعة الاستجابة ومن يجب إبلاغه.</p>
-  <div class="sev">
-    <div class="card" style="border-top-color:var(--ok)"><h3><i class="fa-solid fa-circle" style="color:var(--ok)"></i> منخفضة</h3><p>أثر محدود على جهاز واحد، لا بيانات حساسة.</p><span class="tag">مثال: بريد تصيد لم يُفتح</span></div>
-    <div class="card" style="border-top-color:var(--warn)"><h3><i class="fa-solid fa-circle" style="color:var(--warn)"></i> متوسطة</h3><p>تأثير على عدة مستخدمين أو خدمة غير حرجة.</p><span class="tag">مثال: برمجية خبيثة على 5 أجهزة</span></div>
-    <div class="card" style="border-top-color:var(--bad)"><h3><i class="fa-solid fa-circle" style="color:var(--bad)"></i> عالية</h3><p>تعطل خدمة مهمة أو احتمال تسرب بيانات.</p><span class="tag">مثال: اختراق حساب مدير</span></div>
-    <div class="card" style="border-top-color:var(--crit)"><h3><i class="fa-solid fa-circle" style="color:var(--crit)"></i> حرجة</h3><p>توقف العمل أو تسرب واسع لبيانات حساسة.</p><span class="tag">مثال: فدية على الخوادم الرئيسية</span></div>
-  </div>
-</div></section>
-
-<!-- 11 Risk management process -->
-<section class="slide"><div class="inner">
-  <h2><span class="num">10</span>عملية إدارة المخاطر</h2>
-  <p class="sub">إدارة المخاطر تجعلنا نستعد قبل وقوع الحادثة، بدلاً من رد الفعل بعدها.</p>
-  <div class="grid g4">
-    <div class="card"><div class="ic"><i class="fa-solid fa-1"></i></div><h3>تحديد الأصول</h3><p>ما الذي نملكه وما قيمته؟</p></div>
-    <div class="card"><div class="ic"><i class="fa-solid fa-2"></i></div><h3>تحديد التهديدات والثغرات</h3><p>ما الذي قد يحدث؟ وأين نقاط الضعف؟</p></div>
-    <div class="card"><div class="ic"><i class="fa-solid fa-3"></i></div><h3>تحليل وتقييم الخطر</h3><p>الاحتمالية × الأثر، ثم الترتيب حسب الأولوية.</p></div>
-    <div class="card"><div class="ic"><i class="fa-solid fa-4"></i></div><h3>معالجة الخطر</h3><p>اختيار الاستراتيجية والضوابط المناسبة.</p></div>
-    <div class="card"><div class="ic"><i class="fa-solid fa-5"></i></div><h3>المراقبة والمراجعة</h3><p>المخاطر تتغير، فالعملية مستمرة.</p></div>
-  </div>
-  <div class="card" style="margin-top:16px"><b>نوعا التقييم:</b> <b style="color:var(--accent)">النوعي</b> (منخفض/متوسط/عالٍ) أسهل وأسرع، و<b style="color:var(--accent2)">الكمي</b> يستخدم أرقاماً مالية، مثل: الخسارة السنوية المتوقعة ALE = قيمة الخسارة في الحادثة الواحدة SLE × عدد مرات الحدوث سنوياً ARO.</div>
-</div></section>
-
-<!-- 12 Risk calculator -->
-<section class="slide"><div class="inner">
-  <h2><span class="num">11</span>حاسبة المخاطر ومصفوفة 5×5</h2>
-  <p class="sub">حرّك المؤشرين، أو اضغط على أي خانة في المصفوفة.</p>
-  <div class="calc">
-    <div class="card">
-      <label>الاحتمالية: <b id="lv">3</b> — <span id="lt"></span></label>
-      <input type="range" min="1" max="5" value="3" id="likelihood">
-      <br><br>
-      <label>الأثر: <b id="iv">3</b> — <span id="it"></span></label>
-      <input type="range" min="1" max="5" value="3" id="impact">
-      <div class="result" id="riskResult"></div>
-      <p id="riskAdvice" class="hint" style="font-size:1rem"></p>
-    </div>
-    <div class="card">
-      <div class="matrix" id="matrix"></div>
-      <p class="hint" style="text-align:center">المحور الأفقي: الأثر ← | المحور الرأسي: الاحتمالية ↑</p>
-    </div>
-  </div>
-</div></section>
-
-<!-- 13 Treatment -->
-<section class="slide"><div class="inner">
-  <h2><span class="num">12</span>استراتيجيات معالجة المخاطر</h2>
-  <p class="sub">اضغط على البطاقة لرؤية مثال.</p>
-  <div class="grid g2">
-    <div class="flip" onclick="this.classList.toggle('on')"><div class="face">
-      <div class="f"><div class="ic"><i class="fa-solid fa-ban"></i></div><h3>التجنب Avoid</h3><p>إيقاف النشاط المسبب للخطر.</p></div>
-      <div class="b"><b>مثال:</b> المدرسة تلغي خدمة رفع الملفات القديمة غير الآمنة بدلاً من الاستمرار فيها.</div></div></div>
-    <div class="flip" onclick="this.classList.toggle('on')"><div class="face">
-      <div class="f"><div class="ic"><i class="fa-solid fa-screwdriver-wrench"></i></div><h3>التخفيف Mitigate</h3><p>تقليل الاحتمالية أو الأثر بضوابط.</p></div>
-      <div class="b"><b>مثال:</b> تفعيل التحقق الثنائي، تحديث الأنظمة، النسخ الاحتياطي، تدريب الموظفين.</div></div></div>
-    <div class="flip" onclick="this.classList.toggle('on')"><div class="face">
-      <div class="f"><div class="ic"><i class="fa-solid fa-rotate"></i></div><h3>النقل Transfer</h3><p>نقل العبء المالي لطرف آخر.</p></div>
-      <div class="b"><b>مثال:</b> التأمين السيبراني، أو التعاقد مع مزود خدمة سحابية مسؤول عن البنية.<br>⚠️ المسؤولية النهائية تبقى على المؤسسة.</div></div></div>
-    <div class="flip" onclick="this.classList.toggle('on')"><div class="face">
-      <div class="f"><div class="ic"><i class="fa-solid fa-hand"></i></div><h3>القبول Accept</h3><p>تحمّل الخطر لأن كلفة معالجته أكبر من أثره.</p></div>
-      <div class="b"><b>مثال:</b> خطر منخفض جداً على جهاز عرض قديم بلا بيانات، مع توثيق القرار واعتماده من الإدارة.</div></div></div>
-  </div>
-</div></section>
-
-<!-- 14 Treatment activity -->
-<section class="slide"><div class="inner">
-  <h2><span class="num">13</span>نشاط: صنّف المعالجة</h2>
-  <p class="sub">اختر بطاقة ثم ضعها في الاستراتيجية المناسبة.</p>
-  <div class="pool" id="pool2"></div>
-  <div class="bins">
-    <div class="bin" data-bin="avoid" onclick="dropIn(this,'2')"><h4><i class="fa-solid fa-ban"></i> تجنب</h4></div>
-    <div class="bin" data-bin="mitigate" onclick="dropIn(this,'2')"><h4><i class="fa-solid fa-screwdriver-wrench"></i> تخفيف</h4></div>
-    <div class="bin" data-bin="transfer" onclick="dropIn(this,'2')"><h4><i class="fa-solid fa-rotate"></i> نقل</h4></div>
-    <div class="bin" data-bin="accept" onclick="dropIn(this,'2')"><h4><i class="fa-solid fa-hand"></i> قبول</h4></div>
-  </div>
-  <p class="score" id="score2" style="margin-top:12px"></p>
-</div></section>
-
-<!-- 15 BCP DRP -->
-<section class="slide"><div class="inner">
-  <h2><span class="num">14</span>استمرارية الأعمال والتعافي من الكوارث</h2>
-  <p class="sub">ماذا لو نجح الهجوم رغم كل شيء؟</p>
-  <div class="grid g2">
-    <div class="card"><div class="ic"><i class="fa-solid fa-building"></i></div><h3>خطة استمرارية الأعمال BCP</h3><p>كيف تستمر المؤسسة في تقديم خدماتها الأساسية أثناء الأزمة.</p></div>
-    <div class="card"><div class="ic"><i class="fa-solid fa-database"></i></div><h3>خطة التعافي من الكوارث DRP</h3><p>كيف نعيد الأنظمة التقنية والبيانات للعمل بعد الأزمة.</p></div>
-    <div class="card"><div class="ic"><i class="fa-solid fa-stopwatch"></i></div><h3>RTO — زمن الاستعادة المستهدف</h3><p>أقصى مدة مقبولة لتوقف النظام. <br><b>مثال:</b> بوابة الطلاب يجب أن تعود خلال 4 ساعات.</p></div>
-    <div class="card"><div class="ic"><i class="fa-solid fa-calendar"></i></div><h3>RPO — نقطة الاستعادة المستهدفة</h3><p>أقصى كمية بيانات يمكن خسارتها مقاسة بالزمن.<br><b>مثال:</b> نسخ احتياطي كل ساعة ← RPO = ساعة.</p></div>
-  </div>
-  <div class="card" style="margin-top:16px"><b><i class="fa-solid fa-box"></i> قاعدة 3-2-1 للنسخ الاحتياطي:</b> 3 نسخ من البيانات، على وسيطين مختلفين، ونسخة واحدة خارج الموقع (ويُفضّل أن تكون معزولة لا يصلها برنامج الفدية).</div>
-</div></section>
-
-<!-- 16 Scenario -->
-<section class="slide"><div class="inner">
-  <h2><span class="num">15</span>محاكاة: أنت قائد فريق الاستجابة</h2>
-  <p class="sub">هجوم فدية على مدرسة. اتخذ القرار الأفضل في كل مرحلة.</p>
-  <div class="scene" id="scene"></div>
-</div></section>
-
-<!-- 17 Quiz -->
-<section class="slide"><div class="inner">
-  <h2><span class="num">16</span>اختبر نفسك</h2>
-  <p class="sub">اختر الإجابة الصحيحة لكل سؤال.</p>
-  <div id="quiz"></div>
-  <p class="score" id="quizScore"></p>
-</div></section>
-
-<!-- 18 Summary -->
-<section class="slide"><div class="inner">
-  <h2><span class="num">17</span>الخلاصة</h2>
-  <div class="grid g2" style="margin-top:14px">
-    <div class="card"><h3><i class="fa-solid fa-rotate"></i> الاستجابة</h3><p>تحضير ← كشف وتحليل ← احتواء واستئصال وتعافٍ ← دروس مستفادة، في دورة مستمرة.</p></div>
-    <div class="card"><h3><i class="fa-solid fa-scale-balanced"></i> المخاطر</h3><p>الخطر = الاحتمالية × الأثر، ونرتب الأولويات بالمصفوفة.</p></div>
-    <div class="card"><h3><i class="fa-solid fa-compass"></i> المعالجة</h3><p>تجنب، تخفيف، نقل، قبول — مع توثيق القرار.</p></div>
-    <div class="card"><h3><i class="fa-solid fa-database"></i> الاستمرارية</h3><p>BCP و DRP، وتحديد RTO و RPO، ونسخ احتياطية 3-2-1.</p></div>
-  </div>
-  <div class="card" style="margin-top:16px">
-    <h3><i class="fa-solid fa-pen"></i> واجب منزلي</h3>
-    <p>اختر ثلاثة أصول في مدرستك أو منزلك، وحدد لكل أصل تهديداً وثغرة، ثم قيّم الخطر (الاحتمالية × الأثر) واقترح استراتيجية معالجة مناسبة.</p>
-  </div>
-  <p style="margin-top:18px;text-align:center;font-size:1.3rem"><i class="fa-solid fa-graduation-cap"></i> أحسنت! انتهى الدرس</p>
-</div></section>
-
+<section class="slide" data-title="خريطة الدرس"><div class="inner"><p class="eyebrow">خريطة الدرس</p><h2>ثلاث مهارات، وقرار أفضل.</h2><p class="sub">في نهاية الدرس ستكون قادرًا على:</p><div class="grid three objectives"><article class="card"><span class="symbol">↻</span><h3>شرح المراحل</h3><p>تشرح المراحل العامة الست للاستجابة للحوادث والغرض من كل مرحلة.</p></article><article class="card"><span class="symbol">×</span><h3>تحديد الأولويات</h3><p>تستخدم التأثير والاحتمالية لترتيب المخاطر في النموذج المبسط للدرس.</p></article><article class="card"><span class="symbol">↔</span><h3>تصميم استجابة مبررة</h3><p>تختار إجراءات لحادث أمني، وتشرح أسبابها، وتربطها بضوابط وقائية مناسبة.</p></article></div><aside class="callout"><b>السؤال الرئيسي</b><p>عندما يقع حادث أمني، كيف تنظّم المؤسسة استجابتها، وكيف تقرر أي المخاطر تعالج أولًا؟</p></aside><div class="terms"><span>الحادث الأمني</span><span>المراحل الست</span><span>الاحتواء / الاستئصال</span><span>التأثير × الاحتمالية</span></div></div></section>
+<section class="slide" data-title="الحادث الأمني"><div class="inner"><p class="eyebrow">نفهم المشكلة أولًا</p><h2>متى يُعدّ الحدث حادثًا أمنيًا؟</h2><p class="definition">حدث يؤثر في <b>سرية المعلومات</b> أو <b>سلامتها</b> أو <b>توافرها</b>، أو يهددها بجدية، أو يخالف سياسة أمنية.</p><div class="grid three"><article class="card incident"><span class="tag">السرية</span><h3>تسرب المعلومات</h3><p>تسرب بيانات شخصية أو سرية إلى الخارج.</p><div class="example">مثل نشر ملف بيانات الطلاب دون تصريح.</div></article><article class="card incident"><span class="tag">السلامة</span><h3>التلاعب بالبيانات</h3><p>تعديل البيانات داخل نظام دون تصريح.</p><div class="example">مثل تغيير درجات الطلاب بغير صلاحية.</div></article><article class="card incident"><span class="tag">التوافر</span><h3>انقطاع الخدمة</h3><p>تصبح الخدمة غير متاحة بسبب هجوم.</p><div class="example">مثل تعطّل بوابة المدرسة نتيجة هجوم على الخادم.</div></article></div><aside class="callout"><b>لماذا نحتاج إلى الاستجابة؟</b><p>حتى مع تقنيات الحماية والدفاع في العمق، قد يقع حادث. نحتاج إلى وقف انتشاره، وإزالة التهديد، واستعادة الخدمة، ثم تحسين الحماية.</p></aside></div></section>
+<section class="slide" data-title="المراحل الست"><div class="inner"><p class="eyebrow">شكل ٢.٣.١ / نموذج تعليمي مبسط</p><h2>ست مراحل تنظّم الاستجابة.</h2><p class="sub">اختر مرحلة لتعرف غرضها وإجراءً يوضحها.</p><div class="phase-tabs" id="phaseTabs" role="tablist" aria-label="مراحل الاستجابة"></div><article id="phaseDetail" class="phase-detail" role="tabpanel" tabindex="0"></article><aside class="callout compact"><b>مسار مرن</b><p>هذا تسلسل عام؛ قد تتداخل الأنشطة أو تتكرر. إذا كشفت الاستعادة بقايا تهديد، نعود إلى الاحتواء أو إزالة التهديد.</p></aside></div></section>
+<section class="slide" data-title="الاحتواء والاستئصال"><div class="inner"><p class="eyebrow">توقّف وفكّر</p><h2>نوقف الانتشار، ثم نزيل السبب.</h2><div class="grid two"><article class="card compare"><span class="tag">٣ / الاحتواء</span><h3>نحدّ من الضرر</h3><p>نعزل الجزء المتأثر أو نقيّد أثره بالطريقة المناسبة لمنع انتشار المشكلة.</p><div class="example">مثال: عزل جهاز مصاب عن الشبكة.</div></article><article class="card compare"><span class="tag">٤ / إزالة التهديد «الاستئصال»</span><h3>نعالج مصدر المشكلة</h3><p>نزيل التهديد ومسبباته حتى لا يستمر أو يعود.</p><div class="example">مثال: حذف البرمجية الخبيثة ومعالجة الثغرة المستغلة.</div></article></div><div class="question-box"><h3>لماذا يأتي الاحتواء قبل الاستئصال في التسلسل العام؟</h3><button class="btn" id="revealReason" aria-expanded="false" aria-controls="containReason">أظهر التفسير</button><p id="containReason" hidden>لأن التهديد قد ينتشر إلى أجزاء أخرى أثناء محاولة إزالته؛ يحدّ الاحتواء من الضرر، ثم يعالج الاستئصال السبب. وقد تتداخل بعض الإجراءات بحسب الحادث.</p></div></div></section>
+<section class="slide" data-title="رتّب الاستجابة"><div class="inner"><p class="eyebrow">تطبيق / المراحل الست</p><h2>ابنِ مسار الاستجابة.</h2><p class="sub">اختر المراحل بالترتيب العام، من التحضير حتى التحسين.</p><div id="orderPool" class="order-pool"></div><div class="order-track" id="orderOut" aria-label="المراحل التي رتبتها"></div><p class="feedback" id="orderMsg" aria-live="polite"></p><button class="btn" id="resetOrder">ابدأ من جديد ↺</button><p class="hint">نتدرّب هنا على التسلسل العام؛ في الواقع قد نعود إلى مرحلة سابقة.</p></div></section>
+<section class="slide" data-title="تقييم المخاطر"><div class="inner"><p class="eyebrow">شكل ٢.٣.٢ / نموذج الدرس المبسط</p><h2>أي المخاطر نعالج أولًا؟</h2><p class="sub">الخطر هو احتمال وقوع حدث يسبب ضررًا، مع مراعاة احتمال وقوعه وحجم أثره.</p><div class="risk-layout"><article class="card calculator"><div class="formula">درجة الخطر = التأثير × الاحتمالية</div><label for="impact">التأثير <span><b id="iv">٣</b> / <span id="it"></span></span></label><p class="hint">حجم الضرر إذا وقع الحدث.</p><input type="range" min="1" max="3" value="3" id="impact"><label for="likelihood">الاحتمالية <span><b id="lv">٣</b> / <span id="lt"></span></span></label><p class="hint">مدى احتمال وقوع الحدث.</p><input type="range" min="1" max="3" value="3" id="likelihood"><output id="riskResult" class="risk-result" aria-live="polite"></output></article><article class="card matrix-card"><h3>جرّب المصفوفة</h3><p class="hint">الاحتمالية رأسيًا ↑ · التأثير أفقيًا →</p><div id="matrix" class="matrix" aria-label="مصفوفة التأثير والاحتمالية"></div><div class="legend"><span>١ منخفض</span><span>٢ متوسط</span><span>٣ عالٍ</span></div></article></div><p class="hint">مقياس ١–٣ للتدريب هنا، وليس معيارًا عامًا. الأعلى تأثيرًا واحتماليةً من أعلى الأولويات؛ ويعتمد ترتيب الحالات الأخرى على الدرجة والسياق والضوابط المتاحة.</p></div></section>
+<section class="slide" data-title="حدّد الأولوية"><div class="inner"><p class="eyebrow">تطبيق / قارن ثم قرّر</p><h2>الفريق لا يستطيع معالجة كل شيء معًا.</h2><p class="sub">وفق الدرجات المعطاة، أي خطر تبدأ بمعالجته؟</p><div class="table-wrap"><table><caption>مخاطر افتراضية في المدرسة — المقياس من ١ إلى ٣</caption><thead><tr><th scope="col">الخطر</th><th scope="col">التأثير</th><th scope="col">الاحتمالية</th><th scope="col">الدرجة</th></tr></thead><tbody><tr><th scope="row">تسرب بيانات الطلاب</th><td>٣</td><td>٣</td><td>٩</td></tr><tr><th scope="row">تعطّل بوابة المدرسة</th><td>٣</td><td>٢</td><td>٦</td></tr><tr><th scope="row">تعديل ملف نشاط غير حساس</th><td>١</td><td>٢</td><td>٢</td></tr></tbody></table></div><div id="priorityChoices" class="choices"><button class="btn" data-answer="correct">تسرب بيانات الطلاب</button><button class="btn" data-answer="wrong">تعطّل بوابة المدرسة</button><button class="btn" data-answer="wrong">تعديل ملف النشاط</button></div><p class="feedback" id="priorityFeedback" aria-live="polite"></p><aside class="callout compact"><b>إذا تساوت الدرجات؟</b><p>نراجع السياق والضوابط المتاحة. تساوي حاصل الضرب لا يعني أن الخطرين متماثلان في طبيعتهما.</p></aside></div></section>
+<section class="slide" data-title="صمّم الاستجابة"><div class="inner"><p class="eyebrow">مهمّة تطبيقية / أنت فريق الاستجابة</p><h2>ملفات المدرسة أصبحت مشفّرة.</h2><div class="scenario-brief"><span class="status-dot"></span><p>أُكّد وجود برمجية خبيثة على جهاز متصل بمجلد مشترك. لا تزال بعض الأجهزة تعمل. صمّم استجابة، وبرّرها، ثم اربطها بضابط مناسب.</p></div><form id="responseForm"><div class="grid three"><div class="card form-card"><label for="containSelect">٣ / كيف تحتوي الحادث؟</label><select id="containSelect" required><option value="">اختر إجراءً</option><option value="bad">أنتظر حتى تتوقف كل الأجهزة</option><option value="good">أعزل الجهاز المصاب عن الشبكة</option></select><label for="containWhy">لماذا؟</label><textarea id="containWhy" required placeholder="أبرّر كيف يحدّ الإجراء من الانتشار…"></textarea></div><div class="card form-card"><label for="removeSelect">٤ / كيف تزيل التهديد؟</label><select id="removeSelect" required><option value="">اختر إجراءً</option><option value="good">أزيل البرمجية وأعالج الثغرة المستغلة</option><option value="bad">أعيد توصيل الجهاز دون معالجة</option></select><label for="recoverSelect">٥ / كيف تستعيد الخدمة؟</label><select id="recoverSelect" required><option value="">اختر إجراءً</option><option value="bad">أعيد ملفات لا أعرف سلامتها</option><option value="good">أستخدم نسخة سليمة بعد معالجة التهديد وأتحقق من التشغيل الآمن</option></select></div><div class="card form-card"><label for="controlSelect">٦ / أي تحسين يرتبط بالسبب؟</label><select id="controlSelect" required><option value="">اختر ضابطًا</option><option value="updates">التحديثات لمعالجة الثغرات</option><option value="training">التوعية بالمرفقات المشبوهة</option><option value="permissions">تقييد الصلاحيات للحد من الانتشار</option></select><label for="controlWhy">اشرح العلاقة بالإجراء والسبب</label><textarea id="controlWhy" required placeholder="إذا كان سبب الدخول… فإن الضابط… لأنه…"></textarea></div></div><div class="form-actions"><button class="btn primary" type="submit">راجع خطتي ←</button><span class="hint">النسخ الاحتياطية السليمة تدعم الاستعادة وتقلّل الأثر.</span></div></form><div id="responseFeedback" class="feedback" aria-live="polite"></div><details><summary>اعرض نموذجًا للمقارنة والمناقشة</summary><p>أعزل الجهاز حتى لا تنتقل العدوى إلى المجلد المشترك. أزيل البرمجية وأعالج الثغرة، ثم أستعيد من نسخة سليمة وأتحقق من التشغيل الآمن. إذا كان الدخول عبر ثغرة غير محدّثة، فإن التحديثات تقلّل احتمال تكراره. تقييد الصلاحيات يحدّ من انتشار الضرر، والنسخ الاحتياطية تقلّل أثر فقد الملفات. أوثّق ما حدث وأحسّن إجراءات التحضير.</p></details></div></section>
+<section class="slide" data-title="اختبر فهمك"><div class="inner"><p class="eyebrow">تحقّق من تعلّمك</p><h2>هل تستطيع تبرير القرار؟</h2><p class="sub">اختر إجابة لكل سؤال؛ ستظهر تغذية راجعة تشرح السبب.</p><div id="quiz" class="quiz"></div><p id="quizScore" class="feedback" aria-live="polite"></p></div></section>
+<section class="slide" data-title="الخلاصة"><div class="inner"><p class="eyebrow">ما الذي يبقى معك؟</p><h2>استجابة منظّمة.<br><span class="accent">وأولويات مبنية على المخاطر.</span></h2><div class="summary-path" id="summaryPath"></div><div class="grid two"><article class="card"><h3>حدّد الأولوية</h3><p>درجة الخطر = التأثير × الاحتمالية. راعِ السياق والضوابط المتاحة، خاصة عند تساوي الدرجات.</p></article><article class="card"><h3>اربط الاستجابة بالوقاية</h3><p>حوّل الدروس المستفادة إلى ضوابط تقلّل احتمال تكرار الحادث أو أثره.</p></article></div><aside class="callout"><b>بطاقة خروج</b><p>اختر حادثًا: تسرب معلومات، أو تلاعبًا بالبيانات، أو انقطاع خدمة. اكتب إجراء احتواء، وإجراء استئصال، وخطوة استعادة. برّر كل إجراء، ثم اقترح ضابطًا مناسبًا.</p></aside><button class="btn" data-go="0">مراجعة الدرس من البداية ↺</button></div></section>
 </main>
-
-<nav class="nav">
-  <button class="btn" onclick="go(cur+1)" aria-label="التالي">→ التالي</button>
-  <div class="dots" id="dots"></div>
-  <button class="btn" onclick="go(cur-1)" aria-label="السابق">السابق ←</button>
-</nav>
-
-<script src="script.js"></script>
-</body>
-</html>
+<nav class="nav" aria-label="التنقل بين شرائح الدرس"><button class="btn nav-button" id="prev">→ السابق</button><div id="dots" class="dots"></div><button class="btn nav-button primary" id="next">التالي ←</button></nav>
+</body></html>

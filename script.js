@@ -1,199 +1,154 @@
-/* ---------- Navigation ---------- */
-const slides=[...document.querySelectorAll('.slide')];
-let cur=0;
-const dots=document.getElementById('dots');
-slides.forEach((_,i)=>{const d=document.createElement('button');d.className='dot';d.onclick=()=>go(i);d.setAttribute('aria-label','شريحة '+(i+1));dots.appendChild(d);});
-function go(n){
-  if(n<0||n>=slides.length)return;
-  slides.forEach((s,i)=>{s.classList.toggle('active',i===n);s.classList.toggle('prev',i<n);});
-  cur=n;
-  document.getElementById('counter').textContent=(n+1)+' / '+slides.length;
-  document.getElementById('progress').style.width=((n+1)/slides.length*100)+'%';
-  [...dots.children].forEach((d,i)=>d.classList.toggle('on',i===n));
-}
-document.addEventListener('keydown',e=>{
-  if(e.key==='ArrowLeft'||e.key===' ')go(cur+1);
-  if(e.key==='ArrowRight')go(cur-1);
+'use strict';
+const $ = id => document.getElementById(id);
+const ar = n => Number(n).toLocaleString('ar-EG');
+const slides = [...document.querySelectorAll('.slide')];
+let cur = 0;
+slides.forEach((slide, i) => {
+  const dot = document.createElement('button');
+  dot.className = 'dot';
+  dot.setAttribute('aria-label', slide.dataset.title);
+  dot.addEventListener('click', () => go(i));
+  $('dots').append(dot);
 });
-let tx=null;
-document.addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
-document.addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>60)go(dx>0?cur+1:cur-1);tx=null;});
-go(0);
-
-/* ---------- Lifecycle ---------- */
-const phases=[
- {t:'التحضير',items:['إعداد سياسة وخطة الاستجابة للحوادث','تشكيل فريق CSIRT وتحديد الأدوار وقنوات التواصل','تجهيز الأدوات: أنظمة المراقبة SIEM، مضاد الفيروسات، النسخ الاحتياطي','تدريب الموظفين وإجراء تمارين محاكاة']},
- {t:'الكشف والتحليل',items:['رصد المؤشرات: تنبيهات، سجلات، بلاغات المستخدمين','التحقق: هل هو حادثة حقيقية أم إنذار كاذب؟','تحديد النطاق والأنظمة المتأثرة','تصنيف الخطورة وتوثيق كل شيء وإبلاغ المعنيين']},
- {t:'الاحتواء والاستئصال والتعافي',items:['الاحتواء: عزل الأجهزة المصابة عن الشبكة، تعطيل الحسابات المخترقة','جمع الأدلة الرقمية والحفاظ عليها قبل المسح','الاستئصال: إزالة البرمجيات الخبيثة وسد الثغرات وتغيير كلمات المرور','التعافي: الاستعادة من نسخ احتياطية نظيفة ومراقبة الأنظمة بعد إعادتها']},
- {t:'ما بعد الحادثة',items:['اجتماع "الدروس المستفادة" خلال أيام من انتهاء الحادثة','تحليل السبب الجذري: كيف دخل المهاجم؟ ولماذا لم نكتشفه أسرع؟','كتابة التقرير النهائي','تحديث الخطط والضوابط ← العودة لمرحلة التحضير']}
+function go(n) {
+  if (n < 0 || n >= slides.length) return;
+  const focusWasInSlide = slides.some(s => s.contains(document.activeElement));
+  cur = n;
+  slides.forEach((s, i) => { s.classList.toggle('active', i === n); s.inert = i !== n; s.setAttribute('aria-hidden', i !== n); });
+  [...$('dots').children].forEach((d, i) => { d.classList.toggle('on', i === n); if (i === n) d.setAttribute('aria-current', 'step'); else d.removeAttribute('aria-current'); });
+  $('counter').textContent = `${ar(n + 1)} / ${ar(slides.length)}`;
+  $('progress').style.width = `${(n + 1) / slides.length * 100}%`;
+  $('prev').disabled = n === 0;
+  $('next').disabled = n === slides.length - 1;
+  if (focusWasInSlide) { const title = slides[n].querySelector('h1, h2'); title.tabIndex = -1; title.focus({preventScroll:true}); }
+  slides[n].scrollTop = 0;
+}
+$('prev').addEventListener('click', () => go(cur - 1));
+$('next').addEventListener('click', () => go(cur + 1));
+document.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => go(+b.dataset.go)));
+document.querySelector('.brand').addEventListener('click', e => { e.preventDefault(); go(0); });
+document.addEventListener('keydown', e => {
+  if (e.target.closest('input, select, textarea, button, [role="tablist"], summary') || e.altKey || e.ctrlKey || e.metaKey) return;
+  if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur + 1); }
+  if (e.key === 'ArrowRight') { e.preventDefault(); go(cur - 1); }
+});
+let touchStart;
+$('deck').addEventListener('touchstart', e => {
+  touchStart = e.target.closest('input, select, textarea, button') ? null : {x:e.touches[0].clientX, y:e.touches[0].clientY};
+}, {passive:true});
+$('deck').addEventListener('touchend', e => {
+  if (!touchStart) return;
+  const dx = e.changedTouches[0].clientX - touchStart.x, dy = e.changedTouches[0].clientY - touchStart.y;
+  if (Math.abs(dx) > 80 && Math.abs(dx) > Math.abs(dy) * 1.5) go(cur + (dx > 0 ? 1 : -1));
+  touchStart = null;
+}, {passive:true});
+const phases = [
+  {title:'التحضير',purpose:'الاستعداد للحوادث قبل وقوعها.',action:'إنشاء إجراءات وهياكل استجابة مسبقًا، وتحديد المسؤوليات وتجهيز وسائل التواصل.',example:'مثال: إعداد خطة تحدد من يتلقى البلاغ وكيف يتصرف الفريق.'},
+  {title:'الاكتشاف',purpose:'اكتشاف وقوع حادث وتأكيده.',action:'فحص التنبيهات والبلاغات للتحقق من أن ما حدث حادث أمني.',example:'مثال: التحقق من بلاغ عن ملفات مشفّرة وظهور برمجية خبيثة.'},
+  {title:'الاحتواء',purpose:'تحديد نطاق التأثير ومنع انتشار الضرر أكثر.',action:'عزل الجزء المتأثر أو تقييد أثره بالطريقة المناسبة.',example:'مثال: عزل جهاز مصاب عن الشبكة للحد من انتقال العدوى.'},
+  {title:'إزالة التهديد (الاستئصال)',purpose:'إزالة التهديد ومسبباته.',action:'حذف البرمجيات الخبيثة ومعالجة الثغرة المستغلة.',example:'مثال: إزالة البرمجية وتحديث البرنامج الذي استُغلت ثغرته.'},
+  {title:'الاستعادة',purpose:'إعادة الأنظمة والخدمات إلى حالة تشغيل آمنة وطبيعية.',action:'إعادة تشغيل الخدمة بأمان والتحقق من سلامتها؛ وقد تشمل الاستعادة من نسخة احتياطية سليمة.',example:'مثال: استعادة ملفات سليمة بعد معالجة التهديد وفحص الخدمة.'},
+  {title:'الدروس المستفادة والتحسين',purpose:'تقليل احتمال تكرار الحادث وأثره.',action:'تحليل ما حدث، وتوثيق الدروس، وتحسين الضوابط.',example:'مثال: تحسين التحديثات والتوعية وإجراءات النسخ الاحتياطي بناءً على سبب الحادث.'}
 ];
+phases.forEach((p,i) => {
+  const b = document.createElement('button'); b.className = 'phase-tab'; b.id = `phase-${i}`; b.setAttribute('role','tab'); b.setAttribute('aria-controls','phaseDetail');
+  b.innerHTML = `<b>${ar(i+1)}</b>${p.title}`;
+  b.addEventListener('click', () => showPhase(i));
+  b.addEventListener('keydown', e => {
+    let next;
+    if(e.key === 'ArrowLeft') next = (i+1)%6;
+    if(e.key === 'ArrowRight') next = (i+5)%6;
+    if(e.key === 'Home') next = 0;
+    if(e.key === 'End') next = 5;
+    if(next !== undefined){e.preventDefault();showPhase(next);$('phase-'+next).focus();}
+  });
+  $('phaseTabs').append(b);
+});
 function showPhase(i){
-  document.querySelectorAll('.phase').forEach(p=>p.classList.toggle('on',+p.dataset.p===i));
-  const p=phases[i];
-  document.getElementById('phaseDetail').innerHTML='<h3>'+(i+1)+'. '+p.t+'</h3><ul>'+p.items.map(x=>'<li>'+x+'</li>').join('')+'</ul>';
+  [...$('phaseTabs').children].forEach((b,j) => {b.setAttribute('aria-selected',i===j);b.tabIndex=i===j?0:-1;});
+  const p=phases[i]; $('phaseDetail').setAttribute('aria-labelledby',`phase-${i}`);
+  $('phaseDetail').innerHTML=`<div class="phase-number" aria-hidden="true">${ar(i+1)}</div><div><h3>${p.title}</h3><p class="purpose">${p.purpose}</p><p>${p.action}</p><div class="example">${p.example}</div></div>`;
 }
-document.querySelectorAll('.phase').forEach(p=>p.onclick=()=>showPhase(+p.dataset.p));
-showPhase(0);
-
-/* ---------- Classify activities ---------- */
-const sets={
- '1':[
-  ['موظف سجّل دخوله صباحاً',"event"],['تحديث تلقائي لنظام التشغيل',"event"],['طابعة نفدت أوراقها',"event"],
-  ['تسريب ملف درجات الطلاب على الإنترنت',"incident"],['تشفير الملفات وطلب فدية',"incident"],['دخول غير مصرح لحساب المدير',"incident"],['تعطيل موقع المدرسة بهجوم DDoS',"incident"]],
- '2':[
-  ['شراء تأمين سيبراني',"transfer"],['تفعيل التحقق الثنائي',"mitigate"],['إيقاف استخدام برنامج قديم لا يُحدَّث',"avoid"],
-  ['قبول خطر منخفض على جهاز عرض بلا بيانات',"accept"],['تركيب جدار حماية',"mitigate"],['الاستعانة بمزود سحابي مسؤول عن الخوادم',"transfer"],['إلغاء نشر بيانات الطلاب على الموقع',"avoid"]]
-};
-const state={};
-function shuffle(a){return a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]);}
-function initSet(k){
-  state[k]={sel:null,right:0,tries:0};
-  const pool=document.getElementById('pool'+k);pool.innerHTML='';
-  shuffle(sets[k]).forEach(([txt,ans])=>{
-    const c=document.createElement('span');c.className='chip';c.textContent=txt;c.dataset.ans=ans;
-    c.onclick=()=>{pool.querySelectorAll('.chip').forEach(x=>x.classList.remove('sel'));c.classList.add('sel');state[k].sel=c;};
-    pool.appendChild(c);
-  });
-  document.querySelectorAll('#pool'+k).forEach(()=>{});
-}
-function dropIn(bin,k){
-  const s=state[k];if(!s.sel)return;
-  const c=s.sel;s.tries++;
-  if(c.dataset.ans===bin.dataset.bin){
-    c.classList.remove('sel');c.classList.add('right');c.onclick=null;bin.appendChild(c);s.right++;s.sel=null;
-  }else{
-    c.classList.add('wrong');setTimeout(()=>c.classList.remove('wrong'),500);
-  }
-  const total=sets[k].length;
-  document.getElementById('score'+k).textContent= s.right===total
-    ? '<i class="fa-solid fa-trophy"></i> ممتاز! أنجزت التصنيف بـ '+s.tries+' محاولة.'
-    : 'الصحيح: '+s.right+' من '+total;
-}
-initSet('1');initSet('2');
-
-/* ---------- Ordering ---------- */
-const steps=['التحضير','التعرّف','الاحتواء','الاستئصال','التعافي','الدروس المستفادة'];
-let picked=[];
-function initOrder(){
-  picked=[];document.getElementById('orderOut').textContent='';document.getElementById('orderMsg').textContent='';
-  const pool=document.getElementById('orderPool');pool.innerHTML='';
-  shuffle(steps).forEach(s=>{
-    const c=document.createElement('span');c.className='chip';c.textContent=s;
-    c.onclick=()=>{
-      if(c.classList.contains('right'))return;
-      if(s===steps[picked.length]){c.classList.add('right');picked.push(s);document.getElementById('orderOut').textContent=picked.join(' ← ');
-        if(picked.length===steps.length)document.getElementById('orderMsg').textContent='<i class="fa-solid fa-trophy"></i> ترتيب صحيح تماماً!';}
-      else{c.classList.add('wrong');setTimeout(()=>c.classList.remove('wrong'),500);document.getElementById('orderMsg').textContent='ليست هذه الخطوة التالية، حاول مرة أخرى.';}
-    };
-    pool.appendChild(c);
-  });
-}
-initOrder();
-
-/* ---------- Risk calculator ---------- */
-const L=['','نادر','غير مرجح','ممكن','مرجح','شبه مؤكد'];
-const I=['','ضئيل','بسيط','متوسط','كبير','كارثي'];
-function level(s){
-  if(s>=15)return{t:'خطر حرج',c:'var(--crit)',a:'يتطلب معالجة فورية وإبلاغ الإدارة العليا.'};
-  if(s>=10)return{t:'خطر عالٍ',c:'var(--bad)',a:'يجب وضع خطة معالجة عاجلة بضوابط واضحة.'};
-  if(s>=5)return{t:'خطر متوسط',c:'var(--warn)',a:'يعالج ضمن الخطة الدورية ويُراقَب باستمرار.'};
-  return{t:'خطر منخفض',c:'var(--ok)',a:'يمكن قبوله مع التوثيق والمراقبة.'};
-}
-const mx=document.getElementById('matrix');
-for(let l=5;l>=1;l--){
-  const lb=document.createElement('div');lb.className='lbl';lb.textContent=l;mx.appendChild(lb);
-  for(let i=1;i<=5;i++){
-    const d=document.createElement('div');d.className='cell';const s=l*i;d.textContent=s;
-    d.style.background=level(s).c;d.style.color='#fff';d.dataset.l=l;d.dataset.i=i;d.style.cursor='pointer';
-    d.onclick=()=>{lk.value=l;im.value=i;upd();};
-    mx.appendChild(d);
-  }
-}
-mx.appendChild(Object.assign(document.createElement('div'),{className:'lbl'}));
-for(let i=1;i<=5;i++){const lb=document.createElement('div');lb.className='lbl';lb.textContent=i;mx.appendChild(lb);}
-const lk=document.getElementById('likelihood'),im=document.getElementById('impact');
-function upd(){
-  const l=+lk.value,i=+im.value,s=l*i,lv=level(s);
-  document.getElementById('lv').textContent=l;document.getElementById('lt').textContent=L[l];
-  document.getElementById('iv').textContent=i;document.getElementById('it').textContent=I[i];
-  const r=document.getElementById('riskResult');r.textContent=l+' × '+i+' = '+s+' — '+lv.t;r.style.background=lv.c;
-  document.getElementById('riskAdvice').textContent=lv.a;
-  mx.querySelectorAll('.cell').forEach(c=>c.classList.toggle('sel',+c.dataset.l===l&&+c.dataset.i===i));
-}
-lk.oninput=upd;im.oninput=upd;upd();
-
-/* ---------- Scenario ---------- */
-const scenario=[
- {s:'<i class="fa-solid fa-clock"></i> الساعة 8:10 صباحاً: معلمون يبلغون أن ملفاتهم أصبحت بامتداد غريب وظهرت رسالة تطلب فدية بالعملات الرقمية. ما أول إجراء؟',
-  o:[['عزل الأجهزة المصابة فوراً عن الشبكة',1,'صحيح! الاحتواء السريع يمنع انتشار الفدية إلى أجهزة وخوادم أخرى.'],
-     ['إعادة تشغيل كل الأجهزة',0,'إعادة التشغيل قد تمسح أدلة من الذاكرة ولا توقف الانتشار.'],
-     ['دفع الفدية فوراً لاستعادة الملفات',0,'الدفع لا يضمن استعادة البيانات ويشجع المهاجمين، وهو قرار للإدارة بعد استشارة قانونية.']]},
- {s:'<i class="fa-solid fa-magnifying-glass"></i> تم عزل 12 جهازاً. ما الخطوة التالية للفريق؟',
-  o:[['مسح الأجهزة فوراً وإعادة تثبيت النظام',0,'التسرع في المسح يضيّع الأدلة التي نحتاجها لمعرفة طريقة الدخول.'],
-     ['تحديد النطاق وجمع الأدلة ومعرفة نقطة الدخول',1,'ممتاز! التحليل يكشف الثغرة التي يجب سدها، وإلا سيعود المهاجم.'],
-     ['انتظار انتهاء اليوم الدراسي',0,'التأخير يمنح المهاجم وقتاً إضافياً.']]},
- {s:'<i class="fa-solid fa-bug"></i> اتضح أن المهاجم دخل عبر بريد تصيد سرق كلمة مرور ولا يوجد تحقق ثنائي. ماذا تفعل؟',
-  o:[['إزالة البرمجية، إعادة تعيين كلمات المرور، وتفعيل التحقق الثنائي',1,'هذا هو الاستئصال الصحيح: إزالة السبب وسد الثغرة.'],
-     ['حذف بريد التصيد فقط',0,'الحساب ما زال مخترقاً والثغرة ما زالت مفتوحة.'],
-     ['تغيير كلمة مرور المستخدم المصاب فقط',0,'قد تكون حسابات أخرى مخترقة، والثغرة الأساسية (غياب MFA) ما زالت قائمة.']]},
- {s:'<i class="fa-solid fa-database"></i> حان وقت إعادة الأنظمة. من أين تستعيد البيانات؟',
-  o:[['من آخر نسخة احتياطية معزولة تم التحقق من سلامتها',1,'صحيح! النسخة المعزولة والنظيفة هي أساس التعافي الآمن.'],
-     ['من النسخة الاحتياطية المتصلة دائماً بالشبكة دون فحص',0,'قد تكون مشفّرة أو مصابة هي أيضاً.'],
-     ['لا داعي للاستعادة، نبدأ من الصفر',0,'خسارة غير ضرورية للبيانات مع وجود نسخ احتياطية.']]},
- {s:'<i class="fa-solid fa-pen"></i> عادت الأنظمة للعمل. ماذا الآن؟',
-  o:[['إغلاق الملف ونسيان الأمر',0,'بدون دروس مستفادة ستتكرر الحادثة.'],
-     ['عقد اجتماع الدروس المستفادة وتحديث الخطط وتدريب الموظفين على التصيد',1,'رائع! هكذا تكتمل الدورة وتعود لتقوية مرحلة التحضير.'],
-     ['معاقبة المعلم الذي فتح البريد فقط',0,'اللوم وحده لا يعالج السبب؛ المطلوب تحسين الضوابط والتوعية.']]}
-];
-let sc=0,scPts=0;
-function renderScene(){
-  const el=document.getElementById('scene');
-  if(sc>=scenario.length){
-    el.innerHTML='<h3><i class="fa-solid fa-flag-checkered"></i> انتهت المحاكاة</h3><p>نتيجتك: <span class="score">'+scPts+' / '+scenario.length+'</span></p><p>'+(scPts===scenario.length?'قائد استجابة محترف! <i class="fa-solid fa-trophy"></i>':'راجع مراحل الاستجابة وحاول مرة أخرى.')+'</p><br><button class="btn primary" onclick="sc=0;scPts=0;renderScene()">إعادة المحاكاة ↺</button>';
-    return;
-  }
-  const q=scenario[sc];
-  el.innerHTML='<span class="tag">الموقف '+(sc+1)+' من '+scenario.length+'</span><p style="margin-top:10px;font-size:1.15rem">'+q.s+'</p><div class="choices"></div><div class="fb" id="fb"></div>';
-  const ch=el.querySelector('.choices');
-  q.o.forEach(([t,ok,f])=>{
-    const b=document.createElement('button');b.className='btn choice';b.textContent=t;
-    b.onclick=()=>{
-      ch.querySelectorAll('button').forEach(x=>x.disabled=true);
-      b.classList.add(ok?'opt':'opt');b.classList.add(ok?'correct':'incorrect');
-      if(ok)scPts++;
-      const fb=document.getElementById('fb');fb.className='fb show '+(ok?'good':'badf');
-      fb.innerHTML=(ok?'<i class="fa-solid fa-check"></i> ':'<i class="fa-solid fa-xmark"></i> ')+f+'<br><br><button class="btn primary" onclick="sc++;renderScene()">التالي ←</button>';
-    };
-    ch.appendChild(b);
-  });
-}
-renderScene();
-
-/* ---------- Quiz ---------- */
-const quiz=[
- ['ما المرحلة الأولى في دورة الاستجابة للحوادث وفق NIST؟',['الكشف والتحليل','التحضير','الاحتواء','الدروس المستفادة'],1],
- ['عزل جهاز مصاب عن الشبكة يُعد من مرحلة:',['الاستئصال','التعافي','الاحتواء','التحضير'],2],
- ['احتمالية الخطر 4 وأثره 5، فقيمته:',['9','20','1','45'],1],
- ['شراء تأمين سيبراني مثال على استراتيجية:',['التجنب','القبول','النقل','التخفيف'],2],
- ['أقصى كمية بيانات يمكن خسارتها مقاسة بالزمن هي:',['RTO','RPO','BCP','ALE'],1],
- ['هجوم DDoS يستهدف بشكل رئيسي ركن:',['السرية','السلامة','التوفر','الخصوصية'],2]
-];
-let qScore=0,qDone=0;
-const qz=document.getElementById('quiz');
-quiz.forEach(([q,opts,ans],qi)=>{
-  const d=document.createElement('div');d.className='q card';
-  d.innerHTML='<b>'+(qi+1)+'. '+q+'</b><div class="opts"></div>';
-  const o=d.querySelector('.opts');
-  opts.forEach((t,oi)=>{
-    const b=document.createElement('button');b.className='btn opt';b.textContent=t;
-    b.onclick=()=>{
-      o.querySelectorAll('button').forEach(x=>x.disabled=true);
-      o.children[ans].classList.add('correct');
-      if(oi===ans)qScore++;else b.classList.add('incorrect');
-      qDone++;
-      document.getElementById('quizScore').textContent='النتيجة: '+qScore+' / '+quiz.length+(qDone===quiz.length?(qScore>=5?'  <i class="fa-solid fa-star"></i> ممتاز!':'  — راجع الشرائح وحاول مجدداً'):'');
-    };
-    o.appendChild(b);
-  });
-  qz.appendChild(d);
+$('revealReason').addEventListener('click', () => {
+  const isOpen = $('containReason').hidden;
+  $('containReason').hidden = !isOpen;
+  $('revealReason').setAttribute('aria-expanded',isOpen);
+  $('revealReason').textContent = isOpen ? 'أخفِ التفسير' : 'أظهر التفسير';
 });
+let picked=0;
+function initOrder(){
+  picked=0;$('orderPool').replaceChildren();$('orderOut').replaceChildren();$('orderMsg').textContent='';
+  // Shuffle using Fisher–Yates; prevent the solved order from appearing initially.
+  const indices=[0,1,2,3,4,5];
+  for(let i=5;i>0;i--){const j=Math.floor(Math.random()*(i+1));[indices[i],indices[j]]=[indices[j],indices[i]];}
+  if(indices.every((n,i)=>n===i)) indices.reverse();
+  indices.forEach(i=>{
+    const b=document.createElement('button');b.className='btn';b.textContent=phases[i].title;
+    b.addEventListener('click',()=>{
+      if(i!==picked){$('orderMsg').classList.add('error');$('orderMsg').textContent=`حاول مجددًا: ${picked===0?'نبدأ بالاستعداد قبل وقوع الحادث.':`ما المرحلة التي تأتي بعد ${phases[picked-1].title}؟`}`;return;}
+      b.disabled=true;b.classList.add('correct');picked++;
+      const step=document.createElement('span');step.className='ordered-step';step.textContent=`${ar(picked)}. ${phases[i].title}`;$('orderOut').append(step);
+      $('orderMsg').classList.remove('error');$('orderMsg').textContent=picked===6?'أحسنت! رتّبت المراحل الست. تذكّر أن الأنشطة قد تتداخل أو تتكرر.':`صحيح. أكملت ${ar(picked)} من ٦ مراحل.`;
+    });$('orderPool').append(b);
+  });
+}
+$('resetOrder').addEventListener('click',initOrder);
+const levelNames=['','منخفض','متوسط','عالٍ'];
+for(let l=3;l>=1;l--){
+  const label=document.createElement('span');label.className='matrix-label';label.textContent=ar(l);$('matrix').append(label);
+  for(let i=1;i<=3;i++){
+    const b=document.createElement('button');const score=i*l;b.className=`cell ${score>=6?'high':score>=3?'medium':'low'}`;b.textContent=ar(score);b.dataset.i=i;b.dataset.l=l;
+    b.setAttribute('aria-label',`التأثير ${ar(i)}، الاحتمالية ${ar(l)}، درجة الخطر ${ar(score)}`);
+    b.addEventListener('click',()=>{$('impact').value=i;$('likelihood').value=l;updateRisk();});$('matrix').append(b);
+  }
+}
+const empty=document.createElement('span');$('matrix').append(empty);
+for(let i=1;i<=3;i++){const s=document.createElement('span');s.className='matrix-label';s.textContent=ar(i);$('matrix').append(s);}
+function updateRisk(){
+  const i=+$('impact').value,l=+$('likelihood').value;
+  $('iv').textContent=ar(i);$('lv').textContent=ar(l);$('it').textContent=levelNames[i];$('lt').textContent=levelNames[l];
+  $('riskResult').textContent=`${ar(i)} × ${ar(l)} = ${ar(i*l)}${i*l===9?' — من أعلى الأولويات':''}`;
+  document.querySelectorAll('.cell').forEach(b=>{const on=+b.dataset.i===i&&+b.dataset.l===l;b.classList.toggle('selected',on);b.setAttribute('aria-pressed',on);});
+}
+$('impact').addEventListener('input',updateRisk);$('likelihood').addEventListener('input',updateRisk);
+$('priorityChoices').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  const good=b.dataset.answer==='correct';$('priorityFeedback').classList.toggle('error',!good);
+  $('priorityFeedback').textContent=good?'صحيح: ٣ × ٣ = ٩، وهي أعلى درجة في الحالات المعطاة؛ لذلك نبدأ بخطر تسرب بيانات الطلاب.':'قارن حاصل التأثير × الاحتمالية: الدرجة الأعلى هنا هي ٩. حاول مرة أخرى.';
+});
+$('responseForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const mistakes=[];
+  if($('containSelect').value!=='good')mistakes.push('ابدأ باحتواء الانتشار بعزل الجهاز المتأثر.');
+  if($('removeSelect').value!=='good')mistakes.push('أزل البرمجية وعالج الثغرة؛ إعادة التوصيل وحدها لا تزيل التهديد.');
+  if($('recoverSelect').value!=='good')mistakes.push('استعد من نسخة سليمة بعد معالجة التهديد، ثم تحقق من التشغيل الآمن.');
+  const controls={updates:'التحديثات ترتبط بمعالجة الثغرة وتقلّل احتمال استغلالها مجددًا.',training:'التوعية مناسبة إذا كان الدخول عبر مرفق مشبوه؛ اشرح هذه الفرضية في تبريرك.',permissions:'تقييد الصلاحيات يحدّ من انتشار الضرر والوصول غير المصرح به.'};
+  $('responseFeedback').classList.toggle('error',mistakes.length>0);
+  $('responseFeedback').textContent=mistakes.length?mistakes.join(' '):`إجراءاتك توافق التسلسل العام. ${controls[$('controlSelect').value]} للمراجعة الذاتية: هل أوضحت في تبريرك كيف يمنع العزل الانتشار، وكيف يرتبط الضابط بسبب الحادث أو أثره؟ قارن إجابتك بالنموذج أدناه؛ النصوص الحرة تحتاج إلى مناقشة مع المعلم.`;
+});
+const questions=[
+  {q:'ما الغرض الأساسي من مرحلة الاكتشاف؟',opts:['إعادة الأنظمة إلى التشغيل الطبيعي','اكتشاف وقوع حادث وتأكيده','إزالة البرمجية الخبيثة'],answer:1,why:'الاكتشاف يؤكد وقوع الحادث؛ إعادة التشغيل الآمن غرض الاستعادة، وإزالة البرمجية من الاستئصال.'},
+  {q:'كشفت الاستعادة بقايا تهديد. ماذا نفعل؟',opts:['نعود إلى الاحتواء أو إزالة التهديد بحسب الحاجة','نتجاهلها لأن الاستعادة هي المرحلة الخامسة','نكتفي بكتابة تقرير نهائي'],answer:0,why:'المراحل تسلسل عام؛ قد تتداخل الأنشطة أو تتكرر بحسب طبيعة الحادث.'},
+  {q:'خطر تأثيره ٣ واحتماليته ٢. ما درجته؟',opts:['٥','٩','٦'],answer:2,why:'درجة الخطر = التأثير × الاحتمالية؛ ٣ × ٢ = ٦ في مقياس التدريب.'},
+  {q:'أي إجراء يربط الدروس المستفادة بضابط مناسب؟',opts:['إعادة خدمة دون معالجة سبب الحادث','تحديث البرنامج لمعالجة الثغرة المستغلة وتقليل التكرار','عزل الجهاز إلى الأبد دون تحليل'],answer:1,why:'عندما يكون السبب ثغرة مستغلة، تعالجها التحديثات وتقلّل احتمال تكرار الحادث.'}
+];
+const answered=new Map();
+questions.forEach((q,idx)=>{
+  const item=document.createElement('article');item.className='quiz-item';
+  const title=document.createElement('h3');title.textContent=`${ar(idx+1)}. ${q.q}`;item.append(title);
+  const opts=document.createElement('div');opts.className='quiz-options';
+  const feedback=document.createElement('p');feedback.className='feedback';feedback.setAttribute('aria-live','polite');
+  q.opts.forEach((txt,j)=>{
+    const b=document.createElement('button');b.className='btn';b.textContent=txt;
+    b.addEventListener('click',()=>{
+      if(answered.has(idx))return;
+      const good=j===q.answer;answered.set(idx,good);
+      [...opts.children].forEach((option,k)=>{option.disabled=true;if(k===q.answer)option.classList.add('correct');});
+      if(!good)b.classList.add('incorrect');feedback.textContent=(good?'صحيح. ':'راجع السبب: ')+q.why;
+      const correct=[...answered.values()].filter(Boolean).length;
+      $('quizScore').textContent=`أجبت عن ${ar(answered.size)} من ${ar(questions.length)} — الإجابات الصحيحة: ${ar(correct)}.${answered.size===questions.length?' راجع التفسيرات، ثم انتقل إلى بطاقة الخروج.':''}`;
+    });opts.append(b);
+  });item.append(opts,feedback);$('quiz').append(item);
+});
+phases.forEach((p,i)=>{const s=document.createElement('span');s.textContent=`${ar(i+1)} / ${p.title}`;$('summaryPath').append(s);});
+showPhase(0);initOrder();updateRisk();go(0);
