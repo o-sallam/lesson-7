@@ -66,7 +66,7 @@ function dropIn(bin,k){
   }
   const total=sets[k].length;
   document.getElementById('score'+k).textContent= s.right===total
-    ? '🎉 ممتاز! أنجزت التصنيف بـ '+s.tries+' محاولة.'
+    ? '<i class="fa-solid fa-trophy"></i> ممتاز! أنجزت التصنيف بـ '+s.tries+' محاولة.'
     : 'الصحيح: '+s.right+' من '+total;
 }
 initSet('1');initSet('2');
@@ -82,7 +82,7 @@ function initOrder(){
     c.onclick=()=>{
       if(c.classList.contains('right'))return;
       if(s===steps[picked.length]){c.classList.add('right');picked.push(s);document.getElementById('orderOut').textContent=picked.join(' ← ');
-        if(picked.length===steps.length)document.getElementById('orderMsg').textContent='🎉 ترتيب صحيح تماماً!';}
+        if(picked.length===steps.length)document.getElementById('orderMsg').textContent='<i class="fa-solid fa-trophy"></i> ترتيب صحيح تماماً!';}
       else{c.classList.add('wrong');setTimeout(()=>c.classList.remove('wrong'),500);document.getElementById('orderMsg').textContent='ليست هذه الخطوة التالية، حاول مرة أخرى.';}
     };
     pool.appendChild(c);
@@ -124,23 +124,23 @@ lk.oninput=upd;im.oninput=upd;upd();
 
 /* ---------- Scenario ---------- */
 const scenario=[
- {s:'⏰ الساعة 8:10 صباحاً: معلمون يبلغون أن ملفاتهم أصبحت بامتداد غريب وظهرت رسالة تطلب فدية بالعملات الرقمية. ما أول إجراء؟',
+ {s:'<i class="fa-solid fa-clock"></i> الساعة 8:10 صباحاً: معلمون يبلغون أن ملفاتهم أصبحت بامتداد غريب وظهرت رسالة تطلب فدية بالعملات الرقمية. ما أول إجراء؟',
   o:[['عزل الأجهزة المصابة فوراً عن الشبكة',1,'صحيح! الاحتواء السريع يمنع انتشار الفدية إلى أجهزة وخوادم أخرى.'],
      ['إعادة تشغيل كل الأجهزة',0,'إعادة التشغيل قد تمسح أدلة من الذاكرة ولا توقف الانتشار.'],
      ['دفع الفدية فوراً لاستعادة الملفات',0,'الدفع لا يضمن استعادة البيانات ويشجع المهاجمين، وهو قرار للإدارة بعد استشارة قانونية.']]},
- {s:'🔍 تم عزل 12 جهازاً. ما الخطوة التالية للفريق؟',
+ {s:'<i class="fa-solid fa-magnifying-glass"></i> تم عزل 12 جهازاً. ما الخطوة التالية للفريق؟',
   o:[['مسح الأجهزة فوراً وإعادة تثبيت النظام',0,'التسرع في المسح يضيّع الأدلة التي نحتاجها لمعرفة طريقة الدخول.'],
      ['تحديد النطاق وجمع الأدلة ومعرفة نقطة الدخول',1,'ممتاز! التحليل يكشف الثغرة التي يجب سدها، وإلا سيعود المهاجم.'],
      ['انتظار انتهاء اليوم الدراسي',0,'التأخير يمنح المهاجم وقتاً إضافياً.']]},
- {s:'🕳️ اتضح أن المهاجم دخل عبر بريد تصيد سرق كلمة مرور ولا يوجد تحقق ثنائي. ماذا تفعل؟',
+ {s:'<i class="fa-solid fa-bug"></i> اتضح أن المهاجم دخل عبر بريد تصيد سرق كلمة مرور ولا يوجد تحقق ثنائي. ماذا تفعل؟',
   o:[['إزالة البرمجية، إعادة تعيين كلمات المرور، وتفعيل التحقق الثنائي',1,'هذا هو الاستئصال الصحيح: إزالة السبب وسد الثغرة.'],
      ['حذف بريد التصيد فقط',0,'الحساب ما زال مخترقاً والثغرة ما زالت مفتوحة.'],
      ['تغيير كلمة مرور المستخدم المصاب فقط',0,'قد تكون حسابات أخرى مخترقة، والثغرة الأساسية (غياب MFA) ما زالت قائمة.']]},
- {s:'💾 حان وقت إعادة الأنظمة. من أين تستعيد البيانات؟',
+ {s:'<i class="fa-solid fa-database"></i> حان وقت إعادة الأنظمة. من أين تستعيد البيانات؟',
   o:[['من آخر نسخة احتياطية معزولة تم التحقق من سلامتها',1,'صحيح! النسخة المعزولة والنظيفة هي أساس التعافي الآمن.'],
      ['من النسخة الاحتياطية المتصلة دائماً بالشبكة دون فحص',0,'قد تكون مشفّرة أو مصابة هي أيضاً.'],
      ['لا داعي للاستعادة، نبدأ من الصفر',0,'خسارة غير ضرورية للبيانات مع وجود نسخ احتياطية.']]},
- {s:'📝 عادت الأنظمة للعمل. ماذا الآن؟',
+ {s:'<i class="fa-solid fa-pen"></i> عادت الأنظمة للعمل. ماذا الآن؟',
   o:[['إغلاق الملف ونسيان الأمر',0,'بدون دروس مستفادة ستتكرر الحادثة.'],
      ['عقد اجتماع الدروس المستفادة وتحديث الخطط وتدريب الموظفين على التصيد',1,'رائع! هكذا تكتمل الدورة وتعود لتقوية مرحلة التحضير.'],
      ['معاقبة المعلم الذي فتح البريد فقط',0,'اللوم وحده لا يعالج السبب؛ المطلوب تحسين الضوابط والتوعية.']]}
@@ -149,7 +149,7 @@ let sc=0,scPts=0;
 function renderScene(){
   const el=document.getElementById('scene');
   if(sc>=scenario.length){
-    el.innerHTML='<h3>🏁 انتهت المحاكاة</h3><p>نتيجتك: <span class="score">'+scPts+' / '+scenario.length+'</span></p><p>'+(scPts===scenario.length?'قائد استجابة محترف! 🏆':'راجع مراحل الاستجابة وحاول مرة أخرى.')+'</p><br><button class="btn primary" onclick="sc=0;scPts=0;renderScene()">إعادة المحاكاة ↺</button>';
+    el.innerHTML='<h3><i class="fa-solid fa-flag-checkered"></i> انتهت المحاكاة</h3><p>نتيجتك: <span class="score">'+scPts+' / '+scenario.length+'</span></p><p>'+(scPts===scenario.length?'قائد استجابة محترف! <i class="fa-solid fa-trophy"></i>':'راجع مراحل الاستجابة وحاول مرة أخرى.')+'</p><br><button class="btn primary" onclick="sc=0;scPts=0;renderScene()">إعادة المحاكاة ↺</button>';
     return;
   }
   const q=scenario[sc];
@@ -162,7 +162,7 @@ function renderScene(){
       b.classList.add(ok?'opt':'opt');b.classList.add(ok?'correct':'incorrect');
       if(ok)scPts++;
       const fb=document.getElementById('fb');fb.className='fb show '+(ok?'good':'badf');
-      fb.innerHTML=(ok?'✅ ':'❌ ')+f+'<br><br><button class="btn primary" onclick="sc++;renderScene()">التالي ←</button>';
+      fb.innerHTML=(ok?'<i class="fa-solid fa-check"></i> ':'<i class="fa-solid fa-xmark"></i> ')+f+'<br><br><button class="btn primary" onclick="sc++;renderScene()">التالي ←</button>';
     };
     ch.appendChild(b);
   });
@@ -191,7 +191,7 @@ quiz.forEach(([q,opts,ans],qi)=>{
       o.children[ans].classList.add('correct');
       if(oi===ans)qScore++;else b.classList.add('incorrect');
       qDone++;
-      document.getElementById('quizScore').textContent='النتيجة: '+qScore+' / '+quiz.length+(qDone===quiz.length?(qScore>=5?'  🌟 ممتاز!':'  — راجع الشرائح وحاول مجدداً'):'');
+      document.getElementById('quizScore').textContent='النتيجة: '+qScore+' / '+quiz.length+(qDone===quiz.length?(qScore>=5?'  <i class="fa-solid fa-star"></i> ممتاز!':'  — راجع الشرائح وحاول مجدداً'):'');
     };
     o.appendChild(b);
   });
